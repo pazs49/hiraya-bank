@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const CREDENTIALS = {
   username: "admin",
@@ -17,10 +16,9 @@ const useAuthentication = () => {
   });
 
   useEffect(() => {
-    const authData = localStorage.getItem("isLoggedIn");
-    if (authData) {
+    if (localStorage.getItem("isLoggedIn") === "logged") {
       setIsLoggedIn(true);
-    }
+    } else setIsLoggedIn(false);
   }, []);
 
   const login = (credentials, navigate) => {
@@ -41,6 +39,7 @@ const useAuthentication = () => {
       localStorage.setItem("isLoggedIn", "notLogged");
       return false;
     });
+    console.log("first");
     navigate("/login");
   };
 
