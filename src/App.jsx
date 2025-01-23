@@ -1,22 +1,36 @@
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import MainLayout from "./layouts/MainLayout";
+
+import NotFoundPage from "./pages/NotFoundPage";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useState } from "react";
 
 import "./App.css";
-import NotFoundPage from "./pages/NotFoundPage";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    errorElement: <NotFoundPage />,
-  },
-]);
+import useAuthentication from "./hooks/useAuthentication";
 
 function App() {
+  const { isLoggedIn } = useAuthentication();
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <ProtectedRoute isLoggedIn={true}>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
+      errorElement: <NotFoundPage />,
+      children: [{ path: "/", element: <Home /> }],
+    },
+    { path: "/login", element: <Login isLoggedIn={isLoggedIn} /> },
+  ]);
+
   return (
     <>
-      <button className="btn">Click</button>
       <RouterProvider router={router} />
     </>
   );
