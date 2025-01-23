@@ -19,7 +19,7 @@ function App() {
     {
       path: "/",
       element: (
-        <ProtectedRoute isLoggedIn={isLoggedIn}>
+        <ProtectedRoute isLoggedIn={true}>
           <MainLayout />
         </ProtectedRoute>
       ),

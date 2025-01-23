@@ -31,6 +31,7 @@ const Login = ({ isLoggedIn }) => {
   useEffect(() => {
     console.log("isLoggedIn:", localStorage.getItem("isLoggedIn"));
     if (isLoggedIn) {
+      console.log("navigating");
       navigate("/");
     }
   });
