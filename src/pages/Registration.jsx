@@ -1,4 +1,6 @@
+let name = "ivan"
 const Registration = () => {
-  return <div>Ivan</div>;
+  return <div>{name}</div>;
+
 };
 export default Registration;
