@@ -2,11 +2,11 @@ import Navbar from "../components/Navbar";
 
 import { Outlet } from "react-router-dom";
 
-const MainLayout = () => {
+const MainLayout = ({ logout, ...props }) => {
   return (
     <>
-      <Navbar />
-      <Outlet />
+      <Navbar logout={logout} />
+      <Outlet context={{ users: props.users }} />
     </>
   );
 };
