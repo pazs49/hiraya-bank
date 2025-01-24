@@ -15,7 +15,10 @@ const FundOperations = () => {
   return (
     <div>
       <p>{`${getCurrentUser().firstName} ${getCurrentUser().lastName}`}</p>
+      <p>{`${getCurrentUser().balance}`}</p>
+
     </div>
   );
 };
 export default FundOperations;
+
