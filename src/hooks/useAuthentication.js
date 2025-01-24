@@ -15,18 +15,13 @@ const useAuthentication = () => {
     }
   });
 
-  useEffect(() => {
-    if (localStorage.getItem("isLoggedIn") === "logged") {
-      setIsLoggedIn(true);
-    } else setIsLoggedIn(false);
-  }, []);
-
   const login = (credentials, navigate) => {
     if (
       credentials.username === CREDENTIALS.username &&
       credentials.password === CREDENTIALS.password
     ) {
       localStorage.setItem("isLoggedIn", "logged");
+      setIsLoggedIn(true);
       navigate("/");
       console.log("Welcome admin!");
     } else {
@@ -39,7 +34,6 @@ const useAuthentication = () => {
       localStorage.setItem("isLoggedIn", "notLogged");
       return false;
     });
-    console.log("first");
     navigate("/login");
   };
 

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthentication from "../hooks/useAuthentication";
 
-const Login = ({ isLoggedIn }) => {
-  const { login } = useAuthentication();
+const Login = ({ isLoggedIn, login, logout }) => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
@@ -11,7 +10,8 @@ const Login = ({ isLoggedIn }) => {
   });
 
   const handleCheckLogin = () => {
-    login(credentials, navigate);
+    login(credentials, navigate); //navigate on login doesn't work, I added navigate next line to manually navigate
+    navigate("/");
   };
 
   const handleUsername = (e) => {
@@ -29,9 +29,8 @@ const Login = ({ isLoggedIn }) => {
   };
 
   useEffect(() => {
-    console.log("isLoggedIn:", localStorage.getItem("isLoggedIn"));
+    // Prevent from going to Login page again when logged in
     if (isLoggedIn) {
-      console.log("navigating");
       navigate("/");
     }
   });

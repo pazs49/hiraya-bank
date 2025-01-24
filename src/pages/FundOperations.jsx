@@ -1,10 +1,16 @@
-const FundOperations = () => {
-  //Get the user and access the user's balance
-  //Withdraw operation, deduct the value from the balance
-  //Deposit operation, increase the value of the balance
+import { useOutletContext, useParams } from "react-router-dom";
 
-  //function(from, to)
-  //Get the user that will send and get the user that will receive
+const FundOperations = () => {
+  const { id } = useParams();
+  const { users: context } = useOutletContext();
+  const { users } = context;
+
+  const getCurrentUser = () => {
+    const user = users.find((user) => {
+      return user.id === Number(id);
+    });
+    return user;
+  };
 
   const SendMoney = () => {
     return (
@@ -84,5 +90,10 @@ const FundOperations = () => {
       </div>
     );
   };
+  // return (
+  //   <div>
+  //     <p>{`${getCurrentUser().firstName} ${getCurrentUser().lastName}`}</p>
+  //   </div>
+  // );
 };
 export default FundOperations;
