@@ -27,34 +27,37 @@ const USER = [
 
 const GetUserBalance = () => {
 
-    function FirstName() {
-        const inputFirstName = USER.map((user) => {
-            return (
-                <FirstName key={user.firstName} />
-            );
-        });
-    };
+    //     function FirstName() {
+    //         const inputFirstName = USER.map((user) => {
+    //             return (
+    //                 <FirstName key={user.firstName} />
+    //             );
+    //         });
+    //     };
 
-    function LastName() {
-        const inputLastName = USER.map((user) => {
-            return (
-                <LastName key={user.lastName} />
-            );
-        });
-    };
+    //     function LastName() {
+    //         const inputLastName = USER.map((user) => {
+    //             return (
+    //                 <LastName key={user.lastName} />
+    //             );
+    //         });
+    //     };
 
-    const [balance, setBalance] = useState(0);
+    //     const [balance, setBalance] = useState(0);
 
 
-    return (
-        <div className="">
-            <form>
-                <input type="text" onChange={FirstName} />
-                <input type="text" onChange={LastName} />
-                <button type='submit'>{GetUserBalance}</button>
-            </form>
-        </div>
-    )
-}
+    //     return (
+    //         <div className="">
+    //             <form>
+    //                 <input type="text" onChange={FirstName} />
+    //                 <input type="text" onChange={LastName} />
+    //                 <button type='submit'>{GetUserBalance}</button>
+    //             </form>
+    //         </div>
+    //     )
+    // }
 
-export default GetUserBalance
+    // export default GetUserBalance
+    //   return <div>Noel</div>;
+};
+export default GetUserBalance;

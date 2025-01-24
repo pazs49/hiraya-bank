@@ -1,4 +1,10 @@
+import { useOutletContext } from "react-router-dom";
+
 const Registration = () => {
-  return <div></div>;
+  const { users: context } = useOutletContext();
+  const { users } = context;
+  const { addUser } = context;
+
+  return <div>Registration</div>;
 };
 export default Registration;
