@@ -4,7 +4,7 @@ const Registration = () => {
     const { users: context } = useOutletContext();
     const { users } = context;
     const { addUser } = context;
-
+    dada
     return (
         <div className="container mx-auto p-4">
             <h2 className="text-2xl font-bold text-center mb-6">Hiraya Account Creation</h2>
