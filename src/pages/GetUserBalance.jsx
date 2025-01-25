@@ -1,4 +1,4 @@
 const GetUserBalance = () => {
-  return <div></div>;
+  return <div>Noel</div>;
 };
 export default GetUserBalance;
