@@ -10,8 +10,7 @@ const Login = ({ isLoggedIn, login, logout }) => {
   });
 
   const handleCheckLogin = () => {
-    login(credentials, navigate); //navigate on login doesn't work, I added navigate next line to manually navigate
-    navigate("/");
+    login(credentials, navigate);
   };
 
   const handleUsername = (e) => {

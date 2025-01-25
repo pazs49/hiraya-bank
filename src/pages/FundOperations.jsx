@@ -28,6 +28,7 @@ const FundOperations = () => {
 
   const handleDeposit = () => {
     deposit(currentUser, depositAmount);
+    const newBalance = deposit(currentUser, depositAmount);
     setDepositAmount(0);
     setCurrentUser(users.find((user) => user.id === Number(id)));
   };
@@ -147,6 +148,16 @@ const FundOperations = () => {
 
       {/* Send Money Section */}
       <SendMoney />
+      <p>{`${currentUser.firstName} ${currentUser.lastName}`}</p>
+      <p>{`Balance: ${currentUser.balance}`}</p>
+
+      <input
+        type="number"
+        value={depositAmount}
+        onChange={(e) => setDepositAmount(Number(e.target.value))}
+        placeholder="Enter deposit amount"
+      />
+      <button onClick={handleDeposit}>Deposit</button>
     </div>
   );
 };
