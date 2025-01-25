@@ -33,7 +33,6 @@ const FundOperations = () => {
   };
 
   const SendMoney = () => {
-    // Placeholder state for controlled inputs
     const [fromAccount, setFromAccount] = useState("");
     const [toAccount, setToAccount] = useState("");
     const [amount, setAmount] = useState("");
