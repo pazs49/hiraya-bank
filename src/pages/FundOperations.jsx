@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const FundOperations = () => {
   const { id } = useParams();
-  const { users: context, setUsers } = useOutletContext();
+  const { users: context } = useOutletContext();
   const { users } = context;
 
   const [depositAmount, setDepositAmount] = useState(0);
@@ -23,15 +23,13 @@ const FundOperations = () => {
       u.id === user.id ? { ...u, balance: user.balance } : u
     );
 
-    setUsers({ users: updatedUsers });
     return user.balance;
   };
 
   const handleDeposit = () => {
     const newBalance = deposit(currentUser, depositAmount);
-    alert(`New Balance: ${newBalance}`);
-    setDepositAmount(0); 
-    setCurrentUser(users.find((user) => user.id === Number(id))); 
+    setDepositAmount(0);
+    setCurrentUser(users.find((user) => user.id === Number(id)));
   };
 
   if (!currentUser) return <div>Loading...</div>;
