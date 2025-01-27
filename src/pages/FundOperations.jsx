@@ -71,20 +71,6 @@ const FundOperations = () => {
         <input
           type="number"
           value={depositAmount}
-          onChange={(e) => setDepositAmount(Number(e.target.value))}
-          placeholder="Enter deposit amount"
-        />
-        <button onClick={handleDeposit}>Deposit</button>
-        <button
-          onClick={() => {
-            console.log(users);
-          }}
-        >
-          LOG USERS
-        </button>
-        <input
-          type="number"
-          value={depositAmount}
           onChange={(e) =>
             setDepositAmount(Math.max(0, Number(e.target.value)))
           }
