@@ -9,6 +9,7 @@ const TEMP_TRANSACTIONS = [
         updatedBalance: 1000,
         to: -1,
         from: -1,
+        notes: " ",
       },
       {
         transactionId: 2,
@@ -17,6 +18,7 @@ const TEMP_TRANSACTIONS = [
         updatedBalance: 400,
         to: -1,
         from: 1,
+        notes: " ",
       },
       {
         transactionId: 3,
@@ -25,6 +27,7 @@ const TEMP_TRANSACTIONS = [
         updatedBalance: 500,
         to: -1,
         from: 3,
+        notes: " ",
       },
       {
         transactionId: 4,
@@ -33,6 +36,7 @@ const TEMP_TRANSACTIONS = [
         updatedBalance: 200,
         to: -1,
         from: -1,
+        notes: " ",
       },
     ],
   },
