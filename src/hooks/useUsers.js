@@ -6,6 +6,15 @@ const useUsers = () => {
   const addUser = (user) => {
     setUsers((prevUsers) => [...users, user]);
   };
-  return { users, addUser };
+
+  const updateUser = (id, user) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((mUser) =>
+        mUser.id === id ? { ...mUser, ...user } : mUser
+      )
+    );
+  };
+
+  return { users, updateUser, addUser };
 };
 export default useUsers;

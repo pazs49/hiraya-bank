@@ -46,6 +46,13 @@ const FundOperations = () => {
         placeholder="Enter deposit amount"
       />
       <button onClick={handleDeposit}>Deposit</button>
+      <button
+        onClick={() => {
+          console.log(users);
+        }}
+      >
+        LOG USERS
+      </button>
     </div>
   );
 };
