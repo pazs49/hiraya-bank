@@ -9,6 +9,7 @@ import Registration from "./pages/Registration";
 import DisplayAllUsers from "./pages/DisplayAllUsers";
 import GetUserBalance from "./pages/GetUserBalance";
 import FundOperations from "./pages/FundOperations";
+import SendMoney from "./pages/SendMoney";
 
 import useAuthentication from "./hooks/useAuthentication";
 import useUsers from "./hooks/useUsers";
@@ -35,6 +36,7 @@ function App() {
         { path: "/register", element: <Registration /> },
         { path: "/users", element: <DisplayAllUsers /> },
         { path: "/users/:id", element: <FundOperations /> },
+        { path: "/send-money", element: <SendMoney /> },
       ],
     },
     {

@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import SendMoney from "./SendMoney";
 
 const FundOperations = () => {
   const { id } = useParams();
@@ -56,7 +57,8 @@ const FundOperations = () => {
     }
   };
 
-  if (!currentUser) return <div className="text-white text-center">Loading...</div>;
+  if (!currentUser)
+    return <div className="text-white text-center">Loading...</div>;
 
   return (
     <div className="bg-gradient-to-r from-purple-700 to-purple-400 min-h-screen flex items-center justify-center p-4">
@@ -69,7 +71,9 @@ const FundOperations = () => {
         <input
           type="number"
           value={depositAmount}
-          onChange={(e) => setDepositAmount(Math.max(0, Number(e.target.value)))}
+          onChange={(e) =>
+            setDepositAmount(Math.max(0, Number(e.target.value)))
+          }
           placeholder="Enter deposit amount"
           className="w-full p-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring focus:ring-purple-300 mb-4"
         />
@@ -83,7 +87,9 @@ const FundOperations = () => {
         <input
           type="number"
           value={withdrawAmount}
-          onChange={(e) => setWithdrawAmount(Math.max(0, Number(e.target.value)))}
+          onChange={(e) =>
+            setWithdrawAmount(Math.max(0, Number(e.target.value)))
+          }
           placeholder="Enter withdraw amount"
           className="w-full p-3 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring focus:ring-purple-300 mb-4"
         />
