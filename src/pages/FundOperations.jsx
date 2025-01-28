@@ -75,7 +75,7 @@ const FundOperations = () => {
         <h1 className="text-2xl font-bold mb-4">
           {`${currentUser.firstName} ${currentUser.lastName}`}
         </h1>
-        <p className="text-lg mb-6">{`Balance: ${currentUser.balance}`}</p>
+        <p className="text-lg mb-6">{`Current Balance: ${currentUser.balance}`}</p>
 
         <input
           type="number"
