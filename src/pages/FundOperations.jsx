@@ -62,6 +62,15 @@ const FundOperations = () => {
 
   return (
     <div className="bg-gradient-to-r from-purple-700 to-purple-400 min-h-screen flex items-center justify-center p-4">
+      <style>
+        {`
+          input::-webkit-outer-spin-button,
+          input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+        `}
+      </style>
       <div className="bg-gradient-to-b from-purple-700 via-purple-500 to-gray-900 rounded-2xl p-6 w-full max-w-md shadow-xl text-center text-white">
         <h1 className="text-2xl font-bold mb-4">
           {`${currentUser.firstName} ${currentUser.lastName}`}
