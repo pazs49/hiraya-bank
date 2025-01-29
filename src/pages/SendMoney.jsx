@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 
-const mockUser1 = {
-  id: 1,
-  name: "John Doe",
-  email: "johndoe@example.com",
-  balance: 5000,
-};
-
-const mockUser2 = {
-  id: 2,
-  name: "Mike Cruz",
-  email: "mikercruz@example.com",
-  balance: 6000,
-};
-
-const users = { mockUser1, mockUser2 };
-
-const SendMoney = () => {
+const SendMoney = ({ userId }) => {
+  const { users: context } = useOutletContext();
+  const { users } = context;
   const [fromAccount, setFromAccount] = useState("");
-  const [toAccount, setToAccount] = useState("");
+  const [toAccountId, setToAccountId] = useState("");
+  const [toAccountDetails, setToAccountDetails] = useState(null);
   const [amount, setAmount] = useState("");
   const [dateTime] = useState(new Date().toLocaleString());
+
+  useEffect(() => {
+    const user = users.find((user) => user.id === userId);
+    if (user) {
+      setFromAccount(user.accountNumber);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    const user = users.find((user) => user.id === parseInt(toAccountId, 10));
+    setToAccountDetails(user || null);
+  }, [toAccountId]);
 
   return (
     <div className="bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 h-screen flex justify-center items-center p-4">
@@ -30,16 +30,28 @@ const SendMoney = () => {
         <div className="space-y-4">
           <TextField
             label="From Account:"
-            placeholder="Enter your account number"
             value={fromAccount}
-            onChange={(e) => setFromAccount(e.target.value)}
+            disabled={true}
           />
-          <TextField
-            label="To Account:"
-            placeholder="Enter recipient's account number"
-            value={toAccount}
-            onChange={(e) => setToAccount(e.target.value)}
-          />
+          <div className="text-left">
+            <label className="block text-sm font-bold mb-2">To Account:</label>
+            <select
+              value={toAccountId}
+              onChange={(e) => setToAccountId(e.target.value)}
+              className="w-full p-3 rounded-lg border-none outline-none bg-gray-700 text-white"
+            >
+              <option value="" disabled>
+                Select recipient by User ID
+              </option>
+              {users
+                .filter((user) => user.id !== userId)
+                .map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.id} - {user.name}
+                  </option>
+                ))}
+            </select>
+          </div>
           <TextField
             label="Amount"
             type="number"
@@ -62,7 +74,7 @@ const SendMoney = () => {
         <div className="mt-4">
           <ConfirmationDetails
             amount={amount}
-            toAccount={toAccount}
+            toAccount={toAccountDetails ? toAccountDetails.accountNumber : ""}
             fromAccount={fromAccount}
             dateTime={dateTime}
           />
@@ -72,7 +84,14 @@ const SendMoney = () => {
   );
 };
 
-const TextField = ({ label, type = "text", placeholder, value, onChange }) => {
+const TextField = ({
+  label,
+  type = "text",
+  placeholder,
+  value,
+  onChange,
+  disabled = false,
+}) => {
   return (
     <div className="text-left">
       <label className="block text-sm font-bold mb-2">{label}</label>
@@ -81,7 +100,10 @@ const TextField = ({ label, type = "text", placeholder, value, onChange }) => {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="w-full p-3 rounded-lg border-none outline-none bg-gray-700 text-white"
+        disabled={disabled}
+        className={`w-full p-3 rounded-lg border-none outline-none bg-gray-700 text-white ${
+          disabled ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       />
     </div>
   );
@@ -113,10 +135,16 @@ const ConfirmationDetails = ({
         Transaction ID: <strong>{transactionID}</strong>
       </p>
       <div className="flex justify-between mt-4">
-        <button className="bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded-lg transition">
+        <button
+          className="bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 rounded-lg transition"
+          onClick={() => window.location.reload()}
+        >
           Send Another
         </button>
-        <button className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg transition">
+        <button
+          className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg transition"
+          onClick={() => window.history.back()}
+        >
           Go Back
         </button>
       </div>
