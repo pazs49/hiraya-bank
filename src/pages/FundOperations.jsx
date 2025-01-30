@@ -7,8 +7,8 @@ const FundOperations = () => {
   const { users: context } = useOutletContext();
   const { users } = context;
 
-  const [depositAmount, setDepositAmount] = useState(0);
-  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState();
+  const [withdrawAmount, setWithdrawAmount] = useState();
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState("");
 
@@ -49,7 +49,7 @@ const FundOperations = () => {
     setError("");
     if (depositAmount > 0) {
       deposit(currentUser, depositAmount);
-      setDepositAmount(0);
+      setDepositAmount("");
       setCurrentUser(users.find((user) => user.id === Number(id)));
     }
   };
@@ -57,7 +57,7 @@ const FundOperations = () => {
   const handleWithdraw = () => {
     if (withdrawAmount > 0) {
       withdraw(currentUser, withdrawAmount);
-      setWithdrawAmount(0);
+      setWithdrawAmount("");
       setCurrentUser(users.find((user) => user.id === Number(id)));
     }
   };
