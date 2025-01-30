@@ -12,6 +12,7 @@ const Registration = () => {
         email: "",
         balance: "",
     });
+    const [successMessage, setSuccessMessage] = useState("");
     const [errors, setErrors] = useState({});
 
     // Validate form inputs
@@ -32,8 +33,6 @@ const Registration = () => {
 
     // Handle input changes
     const handleChange = (e) => {
-        // const name = e.target.name;
-        // const value = e.target.value;
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -46,6 +45,7 @@ const Registration = () => {
             setErrors(validationErrors);
         } else {
             setErrors({});
+            setShowModal(true);
         }
     };
 
@@ -55,19 +55,9 @@ const Registration = () => {
 
             <h2 className="text-2xl font-bold text-center mb-6">Create Hiraya Bank Account</h2>
 
-            <div className="max-w-lg mx-auto bg-base-200 p-6 rounded-lg shadow-md">
-                <form >
-                    <div className="form-control mb-4">
-                        <label className="label">
-                            <span className="label-text">Hiraya ID</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="id"
-                            placeholder="Enter Hiraya ID number"
-                            className="input input-bordered w-full"
-                        />
-                    </div>
+            <div className="max-w-lg mx-auto bg-base-200 p-6 rounded-lg shadow-lg">
+                <form onSubmit={handleSubmit}>
+                    {/* First Name */}
                     <div className="form-control mb-4">
                         <label className="label">
                             <span className="label-text">First Name</span>
@@ -75,10 +65,17 @@ const Registration = () => {
                         <input
                             type="text"
                             name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
                             placeholder="Enter First Name"
                             className="input input-bordered w-full"
                         />
+                        {errors.firstName && (
+                            <p className="text-red-500 text-sm">{errors.firstName}</p>
+                        )}
                     </div>
+
+                    {/* Last Name */}
                     <div className="form-control mb-4">
                         <label className="label">
                             <span className="label-text">Last Name</span>
@@ -86,10 +83,17 @@ const Registration = () => {
                         <input
                             type="text"
                             name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
                             placeholder="Enter Last Name"
                             className="input input-bordered w-full"
                         />
+                        {errors.lastName && (
+                            <p className="text-red-500 text-sm">{errors.lastName}</p>
+                        )}
                     </div>
+
+                    {/* Email */}
                     <div className="form-control mb-4">
                         <label className="label">
                             <span className="label-text">Email</span>
@@ -97,28 +101,46 @@ const Registration = () => {
                         <input
                             type="email"
                             name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             placeholder="Enter Email"
                             className="input input-bordered w-full"
                         />
+                        {errors.email && (
+                            <p className="text-red-500 text-sm">{errors.email}</p>
+                        )}
                     </div>
+
+                    {/* Balance */}
                     <div className="form-control mb-4">
                         <label className="label">
-                            <span className="label-text">Initial Deposit</span>
+                            <span className="label-text">Balance</span>
                         </label>
                         <input
                             type="number"
                             name="balance"
-                            placeholder="enter Initial deposit amount"
+                            value={formData.balance}
+                            onChange={handleChange}
+                            placeholder="Enter Balance"
                             className="input input-bordered w-full"
                         />
+                        {errors.balance && (
+                            <p className="text-red-500 text-sm">{errors.balance}</p>
+                        )}
                     </div>
-                    <button type="submit" className="btn btn-primary w-full mt-4">
-                        Create User
+
+                    {/* Submit Button */}
+                    <button type="submit" className="btn btn-primary w-full">
+                        Create Account
                     </button>
                 </form>
             </div>
+
         </div>
     );
+
+
+
 
 };
 
