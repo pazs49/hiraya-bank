@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 const SendMoney = ({ selectedUser, users }) => {
   const [fromAccount, setFromAccount] = useState("");
@@ -12,15 +12,17 @@ const SendMoney = ({ selectedUser, users }) => {
   const [dateTime] = useState(new Date().toLocaleString());
   const [transactionID, setTransactionID] = useState("");
 
+  // para ma include yung decimal
+
   useEffect(() => {
     if (selectedUser) {
-      setFromAccount(selectedUser.accountNumber);
-      setFromUser(selectedUser);
+      setFromAccount(selectedUser.accountNumber); // para sa pre-filled
+      setFromUser(selectedUser); // para sa validation
     }
   }, [selectedUser]);
 
   useEffect(() => {
-    const user = users.find((user) => user.id === parseInt(toAccountId, 10));
+    const user = users.find((user) => user.id === parseInt(toAccountId, 10)); // para ma convert yung toAccounID bago i compare sa user.id , if not baka mag error yung findi()
     setToAccountDetails(user || null);
   }, [toAccountId, users]);
 
@@ -32,14 +34,20 @@ const SendMoney = ({ selectedUser, users }) => {
       return setError("Invalid recipient account!");
     }
     if (parseFloat(amount) <= 0) {
+      // para ma include yung decimal
       return setError("Invalid amount!");
     }
     if (fromUser.balance < parseFloat(amount)) {
       return setError("Insufficient balance!");
     }
-
-    fromUser.balance -= parseFloat(amount);
-    toAccountDetails.balance += parseFloat(amount);
+    setFromUser({
+      ...fromUser,
+      balance: fromUser.balance - parseFloat(amount),
+    });
+    setToAccountDetails({
+      ...toAccountDetails,
+      balance: toAccountDetails.balance + parseFloat(amount),
+    });
 
     const mockTransactionID = `TXN${Date.now()}`;
     setTransactionID(mockTransactionID);
