@@ -7,7 +7,7 @@ function SearchComponent({ users }) {
 
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setUsers(value);
+    setInputValue(value);
     filterData(value);
   };
 
@@ -17,20 +17,28 @@ function SearchComponent({ users }) {
       setFilteredData([]);
       return;
     }
-
-    const filtered = data.filter((item) =>
-      item.toLowerCase().includes(lowercasedValue)
+    // filter to loop in collection of array
+    const filtered = users.filter((user) =>
+      user.firstName.toLowerCase().includes(lowercasedValue)
     );
     setFilteredData(filtered);
   };
   console.log(users);
   return (
-    <input
-      type="text"
-      placeholder="Search"
-      value={inputValue}
-      onChange={handleInputChange}
-    />
+    <div>
+      <input
+        type="text"
+        placeholder="Search"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
+      <ul>
+        {filteredData.map((user, index) => (
+          <li key={index}>{user.firstName}</li>
+        ))}
+      </ul>
+    </div>
+
   );
 }
 
