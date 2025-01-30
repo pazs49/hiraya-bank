@@ -37,6 +37,18 @@ const DisplayAllUsers = () => {
     });
     setFilteredData(filtered);
   };
+  // let pagesCount = Math.ceil(filteredData.length / 3);
+  // const dividedUsers = [];
+  // for (i = 0; i < pagesCount; i++) {
+  //   for (let j = 0; j < users.length; j++) {
+  //     counter++;
+  //     dividedUsers.push(users[j]);
+  //     if (counter === 3) {
+  //       break;
+  //     }
+  //   }
+  // }
+
   return (
     <div className="">
       <label className="input input-bordered flex items-center gap-2 m-2 w-[20%] mx-auto">
@@ -59,6 +71,11 @@ const DisplayAllUsers = () => {
       </label>
 
       <ul className="mx-auto">
+        {/* divide users per page */}
+
+
+
+        {/* every page click, only certain users will appear */}
         {filteredData.map((user) => (
           <li className="flex justify-center my-4" key={user.id}>
             {/* Render the users here */}
