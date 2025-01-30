@@ -38,9 +38,9 @@ const DisplayAllUsers = () => {
     setFilteredData(filtered);
   };
   return (
-    <div className="overflow-x-auto">
-      <label className="input input-bordered flex items-center gap-2 m-2">
-        <input className="grow"
+    <div className="">
+      <label className="input input-bordered flex items-center gap-2 m-2 w-[20%] mx-auto">
+        <input className="grow input-bordered input-secondary w-full max-w-xs"
           type="text"
           placeholder="Search"
           value={inputValue}
@@ -58,7 +58,7 @@ const DisplayAllUsers = () => {
         </svg>
       </label>
 
-      <ul className="">
+      <ul className="mx-auto">
         {filteredData.map((user) => (
           <li className="flex justify-center my-4" key={user.id}>
             {/* Render the users here */}
@@ -66,7 +66,7 @@ const DisplayAllUsers = () => {
             <p className="table items-center">{user.lastName}</p>
             <p className="table items-center">{user.balance}</p>
             <button
-              className="table items-center btn-sm btn-ghost"
+              className="table items-center btn btn-outline btn-secondary btn-sm btn-ghost w-[10%] text-center"
               onClick={() => {
                 handleRedirect(user.id);
               }}
