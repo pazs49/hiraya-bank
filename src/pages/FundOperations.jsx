@@ -7,9 +7,10 @@ const FundOperations = () => {
   const { users: context } = useOutletContext();
   const { users } = context;
 
-  const [depositAmount, setDepositAmount] = useState(0);
-  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState();
+  const [withdrawAmount, setWithdrawAmount] = useState();
   const [currentUser, setCurrentUser] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (users) {
@@ -36,15 +37,19 @@ const FundOperations = () => {
         u.id === user.id ? { ...u, balance: user.balance } : u
       );
 
+      setError("");
+      return user.balance;
+    } else {
+      setError("You do not have enough funds to complete this transaction!");
       return user.balance;
     }
-    return user.balance;
   };
 
   const handleDeposit = () => {
+    setError("");
     if (depositAmount > 0) {
       deposit(currentUser, depositAmount);
-      setDepositAmount(0);
+      setDepositAmount("");
       setCurrentUser(users.find((user) => user.id === Number(id)));
     }
   };
@@ -52,7 +57,7 @@ const FundOperations = () => {
   const handleWithdraw = () => {
     if (withdrawAmount > 0) {
       withdraw(currentUser, withdrawAmount);
-      setWithdrawAmount(0);
+      setWithdrawAmount("");
       setCurrentUser(users.find((user) => user.id === Number(id)));
     }
   };
@@ -76,6 +81,25 @@ const FundOperations = () => {
           {`${currentUser.firstName} ${currentUser.lastName}`}
         </h1>
         <p className="text-lg mb-6">{`Current Balance: ${currentUser.balance}`}</p>
+
+        {error && (
+          <div role="alert" className="alert alert-error mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error}</span>
+          </div>
+        )}
 
         <input
           type="number"
