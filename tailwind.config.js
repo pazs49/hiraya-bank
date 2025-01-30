@@ -2,52 +2,34 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "custom-gradient": "linear-gradient(to right, #6B46C1, #9F7AEA)",
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
     themes: [
       {
         mytheme: {
-          primary: "#8c00ff",
+          primary: "#9F7AEA",
 
-          "primary-content": "#e5d9ff",
+          secondary: "#6B46C1",
 
-          secondary: "#f90000",
+          accent: "#A3BFFA",
 
-          "secondary-content": "#150000",
+          neutral: "#2A4365",
 
-          accent: "#00c0ff",
+          "base-100": "#1A202C",
 
-          "accent-content": "#000e16",
+          info: "#63B3ED",
 
-          neutral: "#181818",
+          success: "#48BB78",
 
-          "neutral-content": "#cbcbcb",
+          warning: "#F6E05E",
 
-          "base-100": "#1c2a37",
-
-          "base-200": "#17232e",
-
-          "base-300": "#121c26",
-
-          "base-content": "#ccd0d3",
-
-          info: "#00e6ff",
-
-          "info-content": "#001316",
-
-          success: "#009e41",
-
-          "success-content": "#000901",
-
-          warning: "#e1bb00",
-
-          "warning-content": "#120d00",
-
-          error: "#ff6f88",
-
-          "error-content": "#160406",
+          error: "#F56565",
         },
       },
     ],
