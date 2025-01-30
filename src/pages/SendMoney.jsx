@@ -1,84 +1,118 @@
 import React, { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 
-const SendMoney = ({ userId }) => {
-  const { users: context } = useOutletContext();
-  const { users } = context;
+const SendMoney = ({ selectedUser, users }) => {
   const [fromAccount, setFromAccount] = useState("");
+  const [fromUser, setFromUser] = useState(null);
   const [toAccountId, setToAccountId] = useState("");
   const [toAccountDetails, setToAccountDetails] = useState(null);
   const [amount, setAmount] = useState("");
+  const [error, setError] = useState("");
+  const [transactionCompleted, setTransactionCompleted] = useState(false);
   const [dateTime] = useState(new Date().toLocaleString());
+  const [transactionID, setTransactionID] = useState("");
 
   useEffect(() => {
-    const user = users.find((user) => user.id === userId);
-    if (user) {
-      setFromAccount(user.accountNumber);
+    if (selectedUser) {
+      setFromAccount(selectedUser.accountNumber);
+      setFromUser(selectedUser);
     }
-  }, [userId]);
+  }, [selectedUser]);
 
   useEffect(() => {
     const user = users.find((user) => user.id === parseInt(toAccountId, 10));
     setToAccountDetails(user || null);
-  }, [toAccountId]);
+  }, [toAccountId, users]);
+
+  const handleSendMoney = () => {
+    if (!fromUser) {
+      return setError("Sender not found!");
+    }
+    if (!toAccountDetails) {
+      return setError("Invalid recipient account!");
+    }
+    if (parseFloat(amount) <= 0) {
+      return setError("Invalid amount!");
+    }
+    if (fromUser.balance < parseFloat(amount)) {
+      return setError("Insufficient balance!");
+    }
+
+    fromUser.balance -= parseFloat(amount);
+    toAccountDetails.balance += parseFloat(amount);
+
+    const mockTransactionID = `TXN${Date.now()}`;
+    setTransactionID(mockTransactionID);
+
+    setError("");
+    setTransactionCompleted(true);
+  };
 
   return (
     <div className="bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 h-screen flex justify-center items-center p-4">
       <div className="bg-gradient-to-b from-purple-700 via-purple-500 to-gray-900 rounded-2xl p-8 w-full max-w-md shadow-lg text-white text-center">
         <h2 className="text-2xl font-semibold mb-6">Send Money</h2>
 
-        <div className="space-y-4">
-          <TextField
-            label="From Account:"
-            value={fromAccount}
-            disabled={true}
-          />
-          <div className="text-left">
-            <label className="block text-sm font-bold mb-2">To Account:</label>
-            <select
-              value={toAccountId}
-              onChange={(e) => setToAccountId(e.target.value)}
-              className="w-full p-3 rounded-lg border-none outline-none bg-gray-700 text-white"
-            >
-              <option value="" disabled>
-                Select recipient by User ID
-              </option>
-              {users
-                .filter((user) => user.id !== userId)
-                .map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.id} - {user.name}
+        {!transactionCompleted ? (
+          <>
+            <div className="space-y-4">
+              <TextField
+                label="From Account:"
+                value={fromAccount}
+                disabled={true}
+              />
+
+              <div className="text-left">
+                <label className="block text-sm font-bold mb-2">
+                  To Account:
+                </label>
+                <select
+                  value={toAccountId}
+                  onChange={(e) => setToAccountId(e.target.value)}
+                  className="w-full p-3 rounded-lg border-none outline-none bg-gray-700 text-white"
+                >
+                  <option value="" disabled>
+                    Select recipient by User ID
                   </option>
-                ))}
-            </select>
+                  {users
+                    .filter((user) => user.id !== selectedUser?.id)
+                    .map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.id} - {user.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <TextField
+                label="Amount"
+                type="number"
+                placeholder="Enter amount to transfer"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+
+              {error && <p className="text-red-400">{error}</p>}
+
+              <button
+                className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-lg mt-4 transition"
+                onClick={handleSendMoney}
+              >
+                Send
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="mt-4">
+            <ConfirmationDetails
+              amount={amount}
+              toAccount={toAccountDetails.accountNumber}
+              fromAccount={fromAccount}
+              dateTime={dateTime}
+              transactionID={transactionID}
+            />
           </div>
-          <TextField
-            label="Amount"
-            type="number"
-            placeholder="Enter amount to transfer"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-          <TextField
-            label="Notes (Optional):"
-            placeholder="Add a note"
-            value=""
-            onChange={() => {}}
-          />
-        </div>
-
-        <button className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-lg mt-4 transition">
-          Send
-        </button>
-
-        <div className="mt-4">
-          <ConfirmationDetails
-            amount={amount}
-            toAccount={toAccountDetails ? toAccountDetails.accountNumber : ""}
-            fromAccount={fromAccount}
-            dateTime={dateTime}
-          />
-        </div>
+        )}
       </div>
     </div>
   );
