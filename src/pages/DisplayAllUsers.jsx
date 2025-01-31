@@ -13,7 +13,7 @@ const DisplayAllUsers = () => {
   const [pFilterData, pSetFilterData] = useState();
   const n = 5;
 
-  // Function to redirect users to their personal acount
+  // Function to redirect users to their personal account
   function handleRedirect(userId) {
     navigate(`/users/${userId}`);
   }

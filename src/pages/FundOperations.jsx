@@ -6,9 +6,11 @@ const FundOperations = () => {
   const { id } = useParams();
   const { users: context } = useOutletContext();
   const { users } = context;
+  const { transactions: transactionsContext } = useOutletContext();
+  const { addTransaction } = transactionsContext;
 
-  const [depositAmount, setDepositAmount] = useState();
-  const [withdrawAmount, setWithdrawAmount] = useState();
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState("");
 
@@ -20,18 +22,23 @@ const FundOperations = () => {
   }, [users, id]);
 
   const deposit = (user, amount) => {
-    user.balance += amount;
+    user.balance = Number(user.balance) + amount;
 
     const updatedUsers = users.map((u) =>
       u.id === user.id ? { ...u, balance: user.balance } : u
     );
-
+    addTransaction({
+      userId: id,
+      action: "deposit",
+      previousBalance: user.balance - amount,
+      updatedBalance: user.balance,
+    });
     return user.balance;
   };
 
   const withdraw = (user, amount) => {
     if (user.balance >= amount) {
-      user.balance -= amount;
+      user.balance = Number(user.balance) - amount;
 
       const updatedUsers = users.map((u) =>
         u.id === user.id ? { ...u, balance: user.balance } : u

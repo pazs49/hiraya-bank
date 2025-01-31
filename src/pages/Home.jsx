@@ -29,6 +29,7 @@ const Home = () => {
         <div className="flex w-11/12 mx-auto space-x-4">
           {actions.map((action) => (
             <ActionCard
+              key={action.title}
               title={action.title}
               description={action.description}
               url={action.url}

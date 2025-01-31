@@ -38,7 +38,6 @@ function SearchComponent({ users }) {
         ))}
       </ul>
     </div>
-
   );
 }
 
