@@ -40,6 +40,7 @@ const SendMoney = ({ selectedUser, users }) => {
     if (fromUser.balance < parseFloat(amount)) {
       return setError("Insufficient balance!");
     }
+    const transferAmount = parseFloat(amount);
     setFromUser({
       ...fromUser,
       balance: fromUser.balance - parseFloat(amount),
@@ -118,6 +119,8 @@ const SendMoney = ({ selectedUser, users }) => {
               fromAccount={fromAccount}
               dateTime={dateTime}
               transactionID={transactionID}
+              fromUserBalance={fromUser.balance.toFixed(2)}
+              toUserBalance={toAccountDetails.balance.toFixed(2)}
             />
           </div>
         )}
@@ -157,18 +160,22 @@ const ConfirmationDetails = ({
   fromAccount,
   dateTime,
   transactionID,
+  fromUserBalance,
+  toUserBalance,
 }) => {
   return (
     <div className="bg-gray-700 rounded-lg p-4 text-left">
       <h3 className="text-lg font-semibold mb-3">Transaction Summary</h3>
       <p>
-        Amount: <strong>{amount}</strong>
+        Amount Transferred: <strong>${parseFloat(amount).toFixed(2)}</strong>
       </p>
       <p>
-        To Account: <strong>{toAccount}</strong>
+        From Account: <strong>{fromAccount}</strong> (Balance:{" "}
+        <strong>${fromUserBalance}</strong>)
       </p>
       <p>
-        From Account: <strong>{fromAccount}</strong>
+        To Account: <strong>{toAccount}</strong> (Balance:{" "}
+        <strong>${toUserBalance}</strong>)
       </p>
       <p>
         Date & Time: <strong>{dateTime}</strong>
