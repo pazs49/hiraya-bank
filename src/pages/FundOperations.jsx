@@ -9,8 +9,8 @@ const FundOperations = () => {
   const { transactions: transactionsContext } = useOutletContext();
   const { addTransaction } = transactionsContext;
 
-  const [depositAmount, setDepositAmount] = useState(0);
-  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState();
+  const [withdrawAmount, setWithdrawAmount] = useState();
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState("");
 
