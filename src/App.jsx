@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import DisplayAllUsers from "./pages/DisplayAllUsers";
 import FundOperations from "./pages/FundOperations";
-import SendMoney from "./pages/SendMoney";
 import PrizeRaffle from "./pages/PrizeRaffle";
 import UserDashboard from "./pages/UserDashboard";
 import UserTransactionsHistory from "./pages/UserTransactionsHistory";
@@ -48,9 +47,9 @@ function App() {
           <MainLayout
             users={users}
             transactions={transactions}
+            // users={mockUsers}
             logout={logout}
           />
-          <MainLayout users={mockUsers} logout={logout} />
         </ProtectedRoute>
       ),
       errorElement: <NotFoundPage />,
