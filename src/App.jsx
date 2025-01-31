@@ -9,6 +9,9 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import DisplayAllUsers from "./pages/DisplayAllUsers";
 import FundOperations from "./pages/FundOperations";
+import SendMoney from "./pages/SendMoney";
+import PrizeRaffle from "./pages/PrizeRaffle";
+
 import useAuthentication from "./hooks/useAuthentication";
 import useUsers from "./hooks/useUsers";
 
@@ -51,6 +54,8 @@ function App() {
           path: "/users/:id/send-money",
           element: <SendMoney selectedUser={selectedUser} users={mockUsers} />,
         },
+        { path: "/send-money", element: <SendMoney /> },
+        { path: "/raffle", element: <PrizeRaffle /> },
       ],
     },
     {
