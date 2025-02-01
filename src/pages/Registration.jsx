@@ -5,206 +5,160 @@ const Registration = () => {
   const { users: context } = useOutletContext();
   const { users } = context;
   const { addUser } = context;
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    balance: 0,
+    balance: "",
   });
-  const [successMessage, setSuccessMessage] = useState("");
+
   const [errors, setErrors] = useState({});
-  // const [showModal, setShowModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  // Validate form inputs
-  const validateForm = () => {
-    const validationErrors = {};
-    if (!formData.firstName)
-      validationErrors.firstName = "First Name is required.";
-    if (!formData.lastName)
-      validationErrors.lastName = "Last Name is required.";
-    if (!formData.email) {
-      validationErrors.email = "Email is required.";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      validationErrors.email = "Invalid email format.";
-    }
-    if (!formData.balance || isNaN(formData.balance)) {
-      validationErrors.balance = "Balance must be a valid number.";
-    }
-    return validationErrors;
-  };
-
-  // Handle input changes
+  // Handle Input Changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "balance" ? value.replace(/[^0-9]/g, "") : value, // Allow only numbers for balance
+    }));
   };
 
-  const handleShowModal = () => {
-    document.getElementById("my_modal_3").showModal();
-  };
-  const handleHideModal = () => {
-    document.getElementById("my_modal_3").close();
+  // Validate Form
+  const validateForm = () => {
+    let errors = {};
+
+    if (!formData.firstName.trim()) errors.firstName = "First name is required";
+    if (!formData.lastName.trim()) errors.lastName = "Last name is required";
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Invalid email format";
+    }
+    if (formData.balance === "") {
+      errors.balance = "Balance is required";
+    } else {
+      const balanceNumber = Number(formData.balance);
+      if (isNaN(balanceNumber) || balanceNumber < 0) {
+        errors.balance = "Balance must be zero or a positive number";
+      }
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if no errors
   };
 
-  // Handle form submit
+  // Handle Form Submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
+    if (validateForm()) {
+      setIsModalOpen(true);
+    }
+  };
 
-    console.log(
-      "User details:",
-      formData.firstName,
-      formData.lastName,
-      formData.email,
-      formData.balance
-    );
-    console.log(typeof formData.balance);
+  // Confirm Account Creation
+  const confirmAccountCreation = () => {
+    setIsModalOpen(false);
+    setSuccessMessage("Hiraya Account has been successfully created!");
+
+    setTimeout(() => setSuccessMessage(""), 3000); // Hide message after 3 seconds
 
     addUser({
       id: new Date().getTime(),
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
-      balance: formData.balance,
+      balance: Number(formData.balance)
     });
-
-    // if (Object.keys(validationErrors).length > 0) {
-    //   console.log("Added");
-    //   setErrors(validationErrors);
-    // } else {
-    //   console.log("Not Added");
-
-    //   setErrors({});
-    //   setShowModal(true);
-    // }
   };
 
   useEffect(() => {
     console.log(users);
   }, [users]);
 
+
   return (
-    <div>
-      <div className="container mx-auto p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Create Hiraya Bank Account
-        </h2>
-        <div className="max-w-lg mx-auto bg-base-200 p-6 rounded-lg shadow-lg">
-          <form onSubmit={handleSubmit}>
-            {/* First Name */}
-            <div className="form-control mb-4">
-              <label className="label">
-                <span className="label-text">First Name</span>
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="Enter First Name"
-                className="input input-bordered w-full"
-              />
-              {errors.firstName && (
-                <p className="text-red-500 text-sm">{errors.firstName}</p>
-              )}
-            </div>
-
-            {/* Last Name */}
-            <div className="form-control mb-4">
-              <label className="label">
-                <span className="label-text">Last Name</span>
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Enter Last Name"
-                className="input input-bordered w-full"
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-sm">{errors.lastName}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className="form-control mb-4">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter Email"
-                className="input input-bordered w-full"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Balance */}
-            <div className="form-control mb-4">
-              <label className="label">
-                <span className="label-text">Balance</span>
-              </label>
-              <input
-                type="number"
-                name="balance"
-                value={formData.balance}
-                onChange={handleChange}
-                placeholder="Enter Balance"
-                className="input input-bordered w-full"
-              />
-              {errors.balance && (
-                <p className="text-red-500 text-sm">{errors.balance}</p>
-              )}
-            </div>
-
-            {/* Show Modal Button */}
-            <button
-              type="button"
-              onClick={handleShowModal}
-              className="btn btn-primary w-full"
-            >
-              Create Account
-            </button>
-
-            {/* Modal */}
-            <div>
-              <dialog id="my_modal_3" className="modal w-fit mx-auto">
-                <div className="modal-box flex flex-col items-center">
-                  {/* if there is a button in form, it will close the modal */}
-                  <button
-                    onClick={handleHideModal}
-                    className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                  >
-                    ✕
-                  </button>
-                  <h3 className="font-bold text-lg text-center">
-                    Are the details correct?
-                  </h3>
-                  <p className="py-4 text-center">Press OK to create account</p>
-                  <div className="space-x-5">
-                    {/* Submit Button */}
-                    <button onClick={handleSubmit} className="btn btn-success">
-                      OK
-                    </button>
-                    <button onClick={handleHideModal} className="btn btn-error">
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </dialog>
-            </div>
-            {/* Modal End */}
-          </form>
+    <div className="min-h-screen flex flex-col items-center p-6">
+      {successMessage && (
+        <div className="fixed top-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
+          {successMessage}
         </div>
+      )}
+
+      <div className="max-w-lg mx-auto bg-base-200 p-6 rounded-lg shadow-lg">
+        <h2 className="text-xl font-bold text-center mb-4">Create Hiraya Bank Account</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* First Name */}
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            className={`input input-bordered w-full ${errors.firstName && "border-red-500"}`}
+            value={formData.firstName}
+            onChange={handleChange}
+          />
+          {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+
+          {/* Last Name */}
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            className={`input input-bordered w-full ${errors.lastName && "border-red-500"}`}
+            value={formData.lastName}
+            onChange={handleChange}
+          />
+          {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+
+          {/* Email */}
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className={`input input-bordered w-full ${errors.email && "border-red-500"}`}
+            value={formData.email}
+            onChange={handleChange}
+          />
+          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+
+          {/* Balance */}
+          <input
+            type="text"
+            name="balance"
+            placeholder="Initial Deposit"
+            className={`input input-bordered w-full ${errors.balance && "border-red-500"}`}
+            value={formData.balance}
+            onChange={handleChange}
+          />
+          {errors.balance && <p className="text-red-500 text-sm">{errors.balance}</p>}
+
+          <button type="submit" className="btn btn-primary">Create Account</button>
+        </form>
       </div>
+
+      {/* Confirmation Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-lg font-bold mb-4">Confirm Account Details</h3>
+            <p><strong>First Name:</strong> {formData.firstName}</p>
+            <p><strong>Last Name:</strong> {formData.lastName}</p>
+            <p><strong>Email:</strong> {formData.email}</p>
+            <p><strong>Balance:</strong> ${Number(formData.balance)}</p> {/* Ensure balance is displayed as number */}
+            <div className="flex justify-end gap-2 mt-4">
+              <button className="btn btn-error" onClick={() => setIsModalOpen(false)}>Cancel</button>
+              <button className="btn btn-success" onClick={confirmAccountCreation}>Confirm</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
+
 
 export default Registration;
