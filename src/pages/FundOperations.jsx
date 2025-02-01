@@ -6,6 +6,7 @@ const FundOperations = () => {
   const { id } = useParams();
   const { users: context } = useOutletContext();
   const { users } = context;
+  const { updateUser } = context;
   const { transactions: transactionsContext } = useOutletContext();
   const { addTransaction } = transactionsContext;
 
@@ -45,6 +46,12 @@ const FundOperations = () => {
       );
 
       setError("");
+      addTransaction({
+        id: Number(id),
+        action: "withdraw",
+        previousBalance: user.balance + amount,
+        updatedBalance: user.balance,
+      });
       return user.balance;
     } else {
       setError("You do not have enough funds to complete this transaction!");
