@@ -28,7 +28,7 @@ const FundOperations = () => {
       u.id === user.id ? { ...u, balance: user.balance } : u
     );
     addTransaction({
-      userId: id,
+      id: Number(id),
       action: "deposit",
       previousBalance: user.balance - amount,
       updatedBalance: user.balance,

@@ -4,20 +4,15 @@ import { useEffect, useState } from "react";
 
 const useTransactions = () => {
   const [transactions, setTransactions] = useState(() => {
-    let loadedTransactions;
     if (localStorage.getItem("transactions")) {
-      loadedTransactions = [
-        ...JSON.parse(localStorage.getItem("transactions")),
-      ];
+      return [...JSON.parse(localStorage.getItem("transactions"))];
     } else {
-      loadedTransactions = [];
+      return [...TEMP_TRANSACTIONS];
     }
-
-    return [...TEMP_TRANSACTIONS, ...loadedTransactions];
   });
 
   const addTransaction = ({
-    userId,
+    id,
     action,
     note = "",
     previousBalance,
@@ -26,36 +21,49 @@ const useTransactions = () => {
     from = -1,
     date,
   }) => {
-    const userTransactions = transactions.find((_transaction) => {
-      return _transaction.id === Number(userId);
+    let user = transactions.find((_transaction) => {
+      return _transaction.id === Number(id);
     });
-    const updateTransactions = [
-      ...userTransactions.transactions,
-      {
-        transactionId: userTransactions.transactions.length + 1,
-        action,
-        note,
-        previousBalance,
-        updatedBalance,
-        to,
-        from,
-        date: String(new Date(new Date().getTime())),
-      },
-    ];
-    const updatedUserTransactions = {
-      ...userTransactions,
-      updateTransactions,
+
+    if (!user) {
+      user = {
+        id,
+        transactions: [],
+      };
+      setTransactions((previousTransactions) => [
+        ...previousTransactions,
+        user,
+      ]);
+    }
+
+    const userTransactions = user.transactions;
+
+    const newTransaction = {
+      transactionId: userTransactions.length + 1,
+      action,
+      note,
+      previousBalance,
+      updatedBalance,
+      to,
+      from,
+      date: String(new Date(new Date().getTime())),
     };
-    setTransactions((prevTransactions) => {
-      localStorage.setItem(
-        "transactions",
-        JSON.stringify([...prevTransactions, updatedUserTransactions])
+
+    const updatedUserTransactions = [...userTransactions, newTransaction];
+    const updatedUser = { id, transactions: [...updatedUserTransactions] };
+
+    setTransactions((previousUsers) => {
+      return previousUsers.map((user) =>
+        user.id === Number(id) ? updatedUser : user
       );
-      return [...prevTransactions, updatedUserTransactions];
     });
-    console.log("Updated User", updateTransactions);
+
     console.log("All transactions", transactions);
   };
+
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
 
   return {
     transactions,

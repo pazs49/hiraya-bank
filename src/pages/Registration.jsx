@@ -68,6 +68,7 @@ const Registration = () => {
       balance: formData.balance,
     });
 
+    handleHideModal();
     // if (Object.keys(validationErrors).length > 0) {
     //   console.log("Added");
     //   setErrors(validationErrors);

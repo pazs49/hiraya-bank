@@ -35,11 +35,7 @@ const UserTransactionsHistory = () => {
                 <td>{transaction.action}</td>
                 <td>{transaction.previousBalance}</td>
                 <td>{transaction.updatedBalance}</td>
-                <td>
-                  {transaction.notes.trim().length > 1
-                    ? transaction.notes
-                    : "Empty"}
-                </td>
+                <td>{transaction.notes}</td>
                 <td>{transaction.date}</td>
               </tr>
             );

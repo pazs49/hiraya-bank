@@ -10,8 +10,8 @@ const DisplayAllUsers = () => {
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [pFilterData, pSetFilterData] = useState();
-  const n = 5;
+  const [pFilterData, pSetFilterData] = useState(users);
+  const n = 10;
 
   // Function to redirect users to their personal account
   function handleRedirect(userId) {
@@ -31,15 +31,15 @@ const DisplayAllUsers = () => {
   const filterData = (value) => {
     const lowercasedValue = value.toLowerCase().trim();
     if (!lowercasedValue) {
-      setFilteredData(users);
+      setFilteredData([...users]);
       return;
     }
     // filter to loop in collection of array
-    const filtered = users.filter(function filterUser(user) {
+    const filtered = pFilterData.filter(function filterUser(user) {
       const fullName = user.firstName + " " + user.lastName;
       return fullName.toLowerCase().includes(lowercasedValue);
     });
-    setFilteredData(filtered);
+    pSetFilterData(filtered);
   };
   useEffect(() => {
     pSetFilterData(
