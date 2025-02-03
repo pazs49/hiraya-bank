@@ -22,11 +22,11 @@ const Home = () => {
   return (
     <main>
       <section className="flex flex-col items-center">
-        <h1 className="text-3xl">Welcome, admin!</h1>
-        <h2 className="text-2xl">What shall we do today?</h2>
+        <h1 className="text-3xl mt-2">Welcome, admin!</h1>
+        <h2 className="text-2xl mt-1">What shall we do today?</h2>
       </section>
       <section>
-        <div className="flex w-11/12 mx-auto space-x-4">
+        <div className="flex w-11/12 mx-auto space-x-4 mt-2">
           {actions.map((action) => (
             <ActionCard
               key={action.title}

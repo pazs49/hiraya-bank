@@ -152,7 +152,7 @@ const FundOperations = () => {
         >
           Withdraw
         </button>
-        <div className="border-t-2 border-t-blue-500 mt-5"></div>
+        <div className="border-t-2 border-t-blue-300 border-opacity-70 mt-5"></div>
         <button
           onClick={handleTransfer}
           className="w-full bg-blue-500 text-white py-2 rounded-lg font-bold hover:bg-blue-600 transition mt-5"

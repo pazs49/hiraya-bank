@@ -58,7 +58,7 @@ const useTransactions = () => {
       );
     });
 
-    console.log("All transactions", transactions);
+    // console.log("All transactions", transactions);
   };
 
   useEffect(() => {

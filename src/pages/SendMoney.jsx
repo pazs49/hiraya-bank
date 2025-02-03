@@ -23,8 +23,8 @@ const SendMoney = () => {
 
   // para ma include yung decimal
   useEffect(() => {
-    console.log("From user", fromUser); // From user
-    console.log("To account details", toAccountDetails);
+    // console.log("From user", fromUser); // From user
+    // console.log("To account details", toAccountDetails);
   });
   useEffect(() => {
     if (selectedUser) {

@@ -19,9 +19,9 @@ const Navbar = ({ logout }) => {
     navigate("/users");
   };
   return (
-    <div className="navbar bg-base-100 w-11/12 mx-auto">
+    <div className="navbar bg-base-100 mx-auto px-10">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl" onClick={handleHome}>
+        <a className="text-xl cursor-pointer" onClick={handleHome}>
           Hiraya Bank
         </a>
       </div>
