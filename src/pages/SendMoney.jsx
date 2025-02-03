@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 
-const SendMoney = ({ selectedUser, users }) => {
+const SendMoney = () => {
   const [fromAccount, setFromAccount] = useState("");
   const [fromUser, setFromUser] = useState(null);
   const [toAccountId, setToAccountId] = useState("");
@@ -12,11 +12,26 @@ const SendMoney = ({ selectedUser, users }) => {
   const [dateTime] = useState(new Date().toLocaleString());
   const [transactionID, setTransactionID] = useState("");
 
+  const { users: context } = useOutletContext();
+  const { updateUser } = context;
+  const { users } = context;
+  const { id } = useParams();
+  const selectedUser = users.find((user) => user.id === Number(id));
+
+  const { transactions: transactionsContext } = useOutletContext();
+  const { addTransaction } = transactionsContext;
+
   // para ma include yung decimal
 
   useEffect(() => {
     if (selectedUser) {
-      setFromAccount(selectedUser.accountNumber); // para sa pre-filled
+      setFromAccount(
+        selectedUser.id +
+          "-" +
+          selectedUser.firstName +
+          " " +
+          selectedUser.lastName
+      ); // para sa pre-filled
       setFromUser(selectedUser); // para sa validation
     }
   }, [selectedUser]);
@@ -24,6 +39,8 @@ const SendMoney = ({ selectedUser, users }) => {
   useEffect(() => {
     const user = users.find((user) => user.id === parseInt(toAccountId, 10)); // para ma convert yung toAccounID bago i compare sa user.id , if not baka mag error yung findi()
     setToAccountDetails(user || null);
+
+    // To user
   }, [toAccountId, users]);
 
   const handleSendMoney = () => {
@@ -37,17 +54,50 @@ const SendMoney = ({ selectedUser, users }) => {
       // para ma include yung decimal
       return setError("Invalid amount!");
     }
+
     if (fromUser.balance < parseFloat(amount)) {
       return setError("Insufficient balance!");
     }
     const transferAmount = parseFloat(amount);
-    setFromUser({
-      ...fromUser,
-      balance: fromUser.balance - parseFloat(amount),
+    setFromUser(() => {
+      return {
+        ...fromUser,
+        balance: fromUser.balance - parseFloat(amount),
+      };
     });
-    setToAccountDetails({
+    setToAccountDetails(() => {
+      return {
+        ...toAccountDetails,
+        balance: toAccountDetails.balance + parseFloat(amount),
+      };
+    });
+
+    const updatedUserBalance = fromUser.balance - Number(amount);
+    const updatedToBalance = toAccountDetails.balance + Number(amount);
+    updateUser(fromUser.id, {
+      ...fromUser,
+      balance: updatedUserBalance,
+    });
+    updateUser(toAccountDetails.id, {
       ...toAccountDetails,
-      balance: toAccountDetails.balance + parseFloat(amount),
+      balance: updatedToBalance,
+    });
+
+    addTransaction({
+      ...fromUser,
+      action: "send",
+      previousBalance: fromUser.balance,
+      updatedBalance: updatedUserBalance,
+      to: toAccountDetails.id,
+      from: fromUser.id,
+    });
+
+    addTransaction({
+      ...toAccountDetails,
+      action: "receive",
+      previousBalance: toAccountDetails.balance,
+      updatedBalance: updatedToBalance,
+      from: toAccountDetails.id,
     });
 
     const mockTransactionID = `TXN${Date.now()}`;
@@ -58,7 +108,7 @@ const SendMoney = ({ selectedUser, users }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 h-screen flex justify-center items-center p-4">
+    <div className="mt-20 min-h-screen flex justify-center items-center p-4">
       <div className="bg-gradient-to-b from-purple-700 via-purple-500 to-gray-900 rounded-2xl p-8 w-full max-w-md shadow-lg text-white text-center">
         <h2 className="text-2xl font-semibold mb-6">Send Money</h2>
 
@@ -87,7 +137,7 @@ const SendMoney = ({ selectedUser, users }) => {
                     .filter((user) => user.id !== selectedUser?.id)
                     .map((user) => (
                       <option key={user.id} value={user.id}>
-                        {user.id} - {user.name}
+                        {user.id} - {user.firstName + " " + user.lastName}
                       </option>
                     ))}
                 </select>
@@ -101,7 +151,24 @@ const SendMoney = ({ selectedUser, users }) => {
                 onChange={(e) => setAmount(e.target.value)}
               />
 
-              {error && <p className="text-red-400">{error}</p>}
+              {error && (
+                <div role="alert" className="alert alert-error mt-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 shrink-0 stroke-current"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>{error}</span>
+                </div>
+              )}
 
               <button
                 className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-lg mt-4 transition"
@@ -115,7 +182,7 @@ const SendMoney = ({ selectedUser, users }) => {
           <div className="mt-4">
             <ConfirmationDetails
               amount={amount}
-              toAccount={toAccountDetails.accountNumber}
+              toAccount={toAccountDetails.id}
               fromAccount={fromAccount}
               dateTime={dateTime}
               transactionID={transactionID}

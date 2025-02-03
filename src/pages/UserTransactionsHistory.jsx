@@ -14,7 +14,7 @@ const UserTransactionsHistory = () => {
   });
 
   return userTransactions.transactions.length > 0 ? (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto w-11/12 mx-auto bg-slate-50 bg-opacity-10 p-5 rounded-xl mt-4">
       <table className="table">
         {/* head */}
         <thead>
@@ -44,7 +44,9 @@ const UserTransactionsHistory = () => {
       </table>
     </div>
   ) : (
-    <div>No Transactions Available</div>
+    <div className="flex justify-center mt-2 text-xl">
+      No Transactions Available
+    </div>
   );
 };
 export default UserTransactionsHistory;

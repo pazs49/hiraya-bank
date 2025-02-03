@@ -71,14 +71,16 @@ const Registration = () => {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
-      balance: Number(formData.balance)
+      balance: Number(formData.balance),
+    });
+
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      balance: "",
     });
   };
-
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
-
 
   return (
     <div className="min-h-screen flex flex-col items-center p-6">
@@ -89,7 +91,9 @@ const Registration = () => {
       )}
 
       <div className="max-w-lg mx-auto bg-base-200 p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold text-center mb-4">Create Hiraya Bank Account</h2>
+        <h2 className="text-xl font-bold text-center mb-4">
+          Create Hiraya Bank Account
+        </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* First Name */}
           <input
@@ -100,7 +104,9 @@ const Registration = () => {
             value={formData.firstName}
             onChange={handleChange}
           />
-          {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+          {errors.firstName && (
+            <p className="text-red-500 text-sm">{errors.firstName}</p>
+          )}
 
           {/* Last Name */}
           <input
@@ -111,7 +117,9 @@ const Registration = () => {
             value={formData.lastName}
             onChange={handleChange}
           />
-          {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+          {errors.lastName && (
+            <p className="text-red-500 text-sm">{errors.lastName}</p>
+          )}
 
           {/* Email */}
           <input
@@ -122,7 +130,9 @@ const Registration = () => {
             value={formData.email}
             onChange={handleChange}
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
 
           {/* Balance */}
           <input
@@ -133,16 +143,20 @@ const Registration = () => {
             value={formData.balance}
             onChange={handleChange}
           />
-          {errors.balance && <p className="text-red-500 text-sm">{errors.balance}</p>}
+          {errors.balance && (
+            <p className="text-red-500 text-sm">{errors.balance}</p>
+          )}
 
-          <button type="submit" className="btn btn-primary">Create Account</button>
+          <button type="submit" className="btn btn-primary">
+            Create Account
+          </button>
         </form>
       </div>
 
       {/* Confirmation Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-96 text-slate-50">
             <h3 className="text-lg font-bold mb-4">Confirm Account Details</h3>
             <p ><strong>First Name:</strong> {formData.firstName}</p>
             <p><strong>Last Name:</strong> {formData.lastName}</p>
@@ -158,7 +172,5 @@ const Registration = () => {
     </div>
   );
 };
-
-
 
 export default Registration;

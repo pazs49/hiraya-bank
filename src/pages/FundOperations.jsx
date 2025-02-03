@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import SendMoney from "./SendMoney";
 
 const FundOperations = () => {
   const { id } = useParams();
   const { users: context } = useOutletContext();
   const { users } = context;
+  const { updateUser } = context;
   const { transactions: transactionsContext } = useOutletContext();
   const { addTransaction } = transactionsContext;
 
-  const [depositAmount, setDepositAmount] = useState();
-  const [withdrawAmount, setWithdrawAmount] = useState();
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (users) {
@@ -45,6 +48,12 @@ const FundOperations = () => {
       );
 
       setError("");
+      addTransaction({
+        id: Number(id),
+        action: "withdraw",
+        previousBalance: user.balance + amount,
+        updatedBalance: user.balance,
+      });
       return user.balance;
     } else {
       setError("You do not have enough funds to complete this transaction!");
@@ -69,11 +78,15 @@ const FundOperations = () => {
     }
   };
 
+  const handleTransfer = () => {
+    navigate("send-money");
+  };
+
   if (!currentUser)
     return <div className="text-white text-center">Loading...</div>;
 
   return (
-    <div className="bg-gradient-to-r from-purple-700 to-purple-400 min-h-screen flex items-center justify-center p-4">
+    <div className=" min-h-screen flex items-center justify-center p-4">
       <style>
         {`
           input::-webkit-outer-spin-button,
@@ -138,6 +151,13 @@ const FundOperations = () => {
           className="w-full bg-red-500 text-white py-2 rounded-lg font-bold hover:bg-red-600 transition"
         >
           Withdraw
+        </button>
+        <div className="border-t-2 border-t-blue-300 border-opacity-70 mt-5"></div>
+        <button
+          onClick={handleTransfer}
+          className="w-full bg-blue-500 text-white py-2 rounded-lg font-bold hover:bg-blue-600 transition mt-5"
+        >
+          Transfer
         </button>
       </div>
     </div>

@@ -47,7 +47,6 @@ function App() {
           <MainLayout
             users={users}
             transactions={transactions}
-            // users={mockUsers}
             logout={logout}
           />
         </ProtectedRoute>
@@ -65,10 +64,13 @@ function App() {
         { path: "/users/:id", element: <FundOperations /> },
         {
           path: "/users/:id/send-money",
-          element: <SendMoney selectedUser={selectedUser} users={mockUsers} />,
+          element: <SendMoney />,
         },
         { path: "/send-money", element: <SendMoney /> },
-        { path: "/raffle", element: <PrizeRaffle /> },
+        {
+          path: "/raffle",
+          element: <PrizeRaffle users={users} transactions={transactions} />,
+        },
       ],
     },
     {
