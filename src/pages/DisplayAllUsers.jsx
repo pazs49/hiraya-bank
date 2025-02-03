@@ -11,7 +11,7 @@ const DisplayAllUsers = () => {
   // Pagination
   const [page, setPage] = useState(0);
   const [pFilterData, pSetFilterData] = useState(users);
-  const n = 12;
+  const n = 10;
 
   // Function to redirect users to their personal account
   function handleRedirect(userId) {
