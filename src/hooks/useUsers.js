@@ -32,7 +32,6 @@ const useUsers = () => {
   };
 
   useEffect(() => {
-    console.log("saving..");
     localStorage.setItem("users", JSON.stringify(users));
   });
 

@@ -22,10 +22,7 @@ const SendMoney = () => {
   const { addTransaction } = transactionsContext;
 
   // para ma include yung decimal
-  useEffect(() => {
-    console.log("From user", fromUser); // From user
-    console.log("To account details", toAccountDetails);
-  });
+
   useEffect(() => {
     if (selectedUser) {
       setFromAccount(
@@ -111,7 +108,7 @@ const SendMoney = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 h-screen flex justify-center items-center p-4">
+    <div className="mt-20 min-h-screen flex justify-center items-center p-4">
       <div className="bg-gradient-to-b from-purple-700 via-purple-500 to-gray-900 rounded-2xl p-8 w-full max-w-md shadow-lg text-white text-center">
         <h2 className="text-2xl font-semibold mb-6">Send Money</h2>
 

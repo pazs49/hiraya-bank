@@ -67,7 +67,10 @@ function App() {
           element: <SendMoney />,
         },
         { path: "/send-money", element: <SendMoney /> },
-        { path: "/raffle", element: <PrizeRaffle /> },
+        {
+          path: "/raffle",
+          element: <PrizeRaffle users={users} transactions={transactions} />,
+        },
       ],
     },
     {

@@ -11,7 +11,7 @@ const DisplayAllUsers = () => {
   // Pagination
   const [page, setPage] = useState(0);
   const [pFilterData, pSetFilterData] = useState(users);
-  const n = 10;
+  const n = 12;
 
   // Function to redirect users to their personal account
   function handleRedirect(userId) {
@@ -71,30 +71,44 @@ const DisplayAllUsers = () => {
           />
         </svg>
       </label>
-      <ul className="mx-auto">
-        <ul>
-          {pFilterData &&
-            pFilterData.map((user, index) => (
-              <li className="flex justify-center my-4" key={user.id}>
-                <p className="table items-center">{user.firstName}</p>
-                <p className="table items-center">{user.lastName}</p>
-                <p className="table items-center">{user.balance}</p>
-                <button
-                  className="table items-center btn btn-outline btn-secondary btn-sm btn-ghost w-[10%] text-center"
-                  onClick={() => {
-                    handleRedirect(user.id);
-                  }}
-                >
-                  Manage Account
-                </button>
-              </li>
-            ))}
-        </ul>
-      </ul>
+
+      <div className="overflow-x-auto w-1/2 mx-auto bg-slate-50 bg-opacity-10 p-5 rounded-xl ">
+        <table className="table table-md p-5">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Balance</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pFilterData &&
+              pFilterData.map((user, index) => (
+                <tr key={user.id}>
+                  <td>{user.firstName + " " + user.lastName}</td>
+                  <td>{user.balance}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm"
+                      onClick={() => {
+                        handleRedirect(user.id);
+                      }}
+                    >
+                      Manage Account
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
       <ReactPaginate
-        containerClassName={"flex space-x-3 justify-center"}
+        containerClassName={
+          "flex space-x-3 justify-center mt-4 flex items-center"
+        }
         pageClassName={""}
-        activeClassName={"bg-blue-500"}
+        activeClassName={"btn"}
         onPageChange={(event) => setPage(event.selected)}
         pageCount={Math.ceil(filteredData.length / n)}
         breakLabel="..."
