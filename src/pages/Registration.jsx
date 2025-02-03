@@ -142,15 +142,15 @@ const Registration = () => {
       {/* Confirmation Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96">
             <h3 className="text-lg font-bold mb-4">Confirm Account Details</h3>
-            <p><strong>First Name:</strong> {formData.firstName}</p>
+            <p ><strong>First Name:</strong> {formData.firstName}</p>
             <p><strong>Last Name:</strong> {formData.lastName}</p>
             <p><strong>Email:</strong> {formData.email}</p>
             <p><strong>Balance:</strong> ${Number(formData.balance)}</p> {/* Ensure balance is displayed as number */}
             <div className="flex justify-end gap-2 mt-4">
-              <button className="btn btn-error" onClick={() => setIsModalOpen(false)}>Cancel</button>
               <button className="btn btn-success" onClick={confirmAccountCreation}>Confirm</button>
+              <button className="btn btn-error" onClick={() => setIsModalOpen(false)}>Cancel</button>
             </div>
           </div>
         </div>
