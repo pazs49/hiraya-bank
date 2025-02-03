@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TEMP_USERS from "../TEMP_USERS";
 
 const useUsers = () => {
   const [users, setUsers] = useState(() => {
-    const loadedUsers = [];
     if (localStorage.getItem("users")) {
-      loadedUsers = [...JSON.parse(localStorage.getItem("users"))];
+      return [...JSON.parse(localStorage.getItem("users"))];
     } else {
-      localStorage.setItem("users", []);
+      return [...TEMP_USERS];
     }
-    const allUsers = [...TEMP_USERS, ...loadedUsers];
-    return [...TEMP_USERS, ...loadedUsers];
   });
   const addUser = (user) => {
+    let loadedUsers;
+    let updatedUsers;
+    if (localStorage.getItem("users")) {
+      loadedUsers = [...JSON.parse(localStorage.getItem("users"))];
+      updatedUsers = [...loadedUsers, user];
+    } else {
+      updatedUsers = [user];
+    }
+
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
     setUsers((prevUsers) => [...users, user]);
   };
 
@@ -23,6 +30,11 @@ const useUsers = () => {
       )
     );
   };
+
+  useEffect(() => {
+    console.log("saving..");
+    localStorage.setItem("users", JSON.stringify(users));
+  });
 
   return { users, updateUser, addUser };
 };

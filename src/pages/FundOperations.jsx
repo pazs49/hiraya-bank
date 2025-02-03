@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import SendMoney from "./SendMoney";
 
 const FundOperations = () => {
   const { id } = useParams();
   const { users: context } = useOutletContext();
   const { users } = context;
+  const { updateUser } = context;
+  const { transactions: transactionsContext } = useOutletContext();
+  const { addTransaction } = transactionsContext;
 
-  const [depositAmount, setDepositAmount] = useState();
-  const [withdrawAmount, setWithdrawAmount] = useState();
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (users) {
@@ -20,24 +25,35 @@ const FundOperations = () => {
   }, [users, id]);
 
   const deposit = (user, amount) => {
-    user.balance += amount;
+    user.balance = Number(user.balance) + amount;
 
     const updatedUsers = users.map((u) =>
       u.id === user.id ? { ...u, balance: user.balance } : u
     );
-
+    addTransaction({
+      id: Number(id),
+      action: "deposit",
+      previousBalance: user.balance - amount,
+      updatedBalance: user.balance,
+    });
     return user.balance;
   };
 
   const withdraw = (user, amount) => {
     if (user.balance >= amount) {
-      user.balance -= amount;
+      user.balance = Number(user.balance) - amount;
 
       const updatedUsers = users.map((u) =>
         u.id === user.id ? { ...u, balance: user.balance } : u
       );
 
       setError("");
+      addTransaction({
+        id: Number(id),
+        action: "withdraw",
+        previousBalance: user.balance + amount,
+        updatedBalance: user.balance,
+      });
       return user.balance;
     } else {
       setError("You do not have enough funds to complete this transaction!");
@@ -60,6 +76,10 @@ const FundOperations = () => {
       setWithdrawAmount("");
       setCurrentUser(users.find((user) => user.id === Number(id)));
     }
+  };
+
+  const handleTransfer = () => {
+    navigate("send-money");
   };
 
   if (!currentUser)
@@ -131,6 +151,13 @@ const FundOperations = () => {
           className="w-full bg-red-500 text-white py-2 rounded-lg font-bold hover:bg-red-600 transition"
         >
           Withdraw
+        </button>
+        <div className="border-t-2 border-t-blue-500 mt-5"></div>
+        <button
+          onClick={handleTransfer}
+          className="w-full bg-blue-500 text-white py-2 rounded-lg font-bold hover:bg-blue-600 transition mt-5"
+        >
+          Transfer
         </button>
       </div>
     </div>
