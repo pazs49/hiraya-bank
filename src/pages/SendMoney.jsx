@@ -59,7 +59,7 @@ const SendMoney = ({ selectedUser, users }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 h-screen flex justify-center items-center p-4">
+    <div className="mt-20 min-h-screen flex justify-center items-center p-4">
       <div className="bg-gradient-to-b from-purple-700 via-purple-500 to-gray-900 rounded-2xl p-8 w-full max-w-md shadow-lg text-white text-center">
         <h2 className="text-2xl font-semibold mb-6">Send Money</h2>
 

@@ -73,7 +73,7 @@ const FundOperations = () => {
     return <div className="text-white text-center">Loading...</div>;
 
   return (
-    <div className="bg-gradient-to-r from-purple-700 to-purple-400 min-h-screen flex items-center justify-center p-4">
+    <div className=" min-h-screen flex items-center justify-center p-4">
       <style>
         {`
           input::-webkit-outer-spin-button,
