@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 
-const SendMoney = ({ selectedUser, users }) => {
+const SendMoney = () => {
   const [fromAccount, setFromAccount] = useState("");
   const [fromUser, setFromUser] = useState(null);
   const [toAccountId, setToAccountId] = useState("");
@@ -12,11 +12,29 @@ const SendMoney = ({ selectedUser, users }) => {
   const [dateTime] = useState(new Date().toLocaleString());
   const [transactionID, setTransactionID] = useState("");
 
-  // para ma include yung decimal
+  const { users: context } = useOutletContext();
+  const { updateUser } = context;
+  const { users } = context;
+  const { id } = useParams();
+  const selectedUser = users.find((user) => user.id === Number(id));
 
+  const { transactions: transactionsContext } = useOutletContext();
+  const { addTransaction } = transactionsContext;
+
+  // para ma include yung decimal
+  useEffect(() => {
+    console.log("From user", fromUser); // From user
+    console.log("To account details", toAccountDetails);
+  });
   useEffect(() => {
     if (selectedUser) {
-      setFromAccount(selectedUser.accountNumber); // para sa pre-filled
+      setFromAccount(
+        selectedUser.id +
+          "-" +
+          selectedUser.firstName +
+          " " +
+          selectedUser.lastName
+      ); // para sa pre-filled
       setFromUser(selectedUser); // para sa validation
     }
   }, [selectedUser]);
@@ -24,6 +42,8 @@ const SendMoney = ({ selectedUser, users }) => {
   useEffect(() => {
     const user = users.find((user) => user.id === parseInt(toAccountId, 10)); // para ma convert yung toAccounID bago i compare sa user.id , if not baka mag error yung findi()
     setToAccountDetails(user || null);
+
+    // To user
   }, [toAccountId, users]);
 
   const handleSendMoney = () => {
@@ -42,13 +62,45 @@ const SendMoney = ({ selectedUser, users }) => {
       return setError("Insufficient balance!");
     }
     const transferAmount = parseFloat(amount);
-    setFromUser({
-      ...fromUser,
-      balance: fromUser.balance - parseFloat(amount),
+    setFromUser(() => {
+      return {
+        ...fromUser,
+        balance: fromUser.balance - parseFloat(amount),
+      };
     });
-    setToAccountDetails({
+    setToAccountDetails(() => {
+      return {
+        ...toAccountDetails,
+        balance: toAccountDetails.balance + parseFloat(amount),
+      };
+    });
+
+    const updatedUserBalance = fromUser.balance - Number(amount);
+    const updatedToBalance = toAccountDetails.balance + Number(amount);
+    updateUser(fromUser.id, {
+      ...fromUser,
+      balance: updatedUserBalance,
+    });
+    updateUser(toAccountDetails.id, {
       ...toAccountDetails,
-      balance: toAccountDetails.balance + parseFloat(amount),
+      balance: updatedToBalance,
+    });
+
+    addTransaction({
+      ...fromUser,
+      action: "send",
+      previousBalance: fromUser.balance,
+      updatedBalance: updatedUserBalance,
+      to: toAccountDetails.id,
+      from: fromUser.id,
+    });
+
+    addTransaction({
+      ...toAccountDetails,
+      action: "receive",
+      previousBalance: toAccountDetails.balance,
+      updatedBalance: updatedToBalance,
+      from: toAccountDetails.id,
     });
 
     const mockTransactionID = `TXN${Date.now()}`;
@@ -88,7 +140,7 @@ const SendMoney = ({ selectedUser, users }) => {
                     .filter((user) => user.id !== selectedUser?.id)
                     .map((user) => (
                       <option key={user.id} value={user.id}>
-                        {user.id} - {user.name}
+                        {user.id} - {user.firstName + " " + user.lastName}
                       </option>
                     ))}
                 </select>
@@ -133,7 +185,7 @@ const SendMoney = ({ selectedUser, users }) => {
           <div className="mt-4">
             <ConfirmationDetails
               amount={amount}
-              toAccount={toAccountDetails.accountNumber}
+              toAccount={toAccountDetails.id}
               fromAccount={fromAccount}
               dateTime={dateTime}
               transactionID={transactionID}

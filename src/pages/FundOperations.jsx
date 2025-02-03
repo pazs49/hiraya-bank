@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import SendMoney from "./SendMoney";
 
 const FundOperations = () => {
@@ -10,10 +10,12 @@ const FundOperations = () => {
   const { transactions: transactionsContext } = useOutletContext();
   const { addTransaction } = transactionsContext;
 
-  const [depositAmount, setDepositAmount] = useState();
-  const [withdrawAmount, setWithdrawAmount] = useState();
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (users) {
@@ -74,6 +76,10 @@ const FundOperations = () => {
       setWithdrawAmount("");
       setCurrentUser(users.find((user) => user.id === Number(id)));
     }
+  };
+
+  const handleTransfer = () => {
+    navigate("send-money");
   };
 
   if (!currentUser)
@@ -145,6 +151,13 @@ const FundOperations = () => {
           className="w-full bg-red-500 text-white py-2 rounded-lg font-bold hover:bg-red-600 transition"
         >
           Withdraw
+        </button>
+        <div className="border-t-2 border-t-blue-500 mt-5"></div>
+        <button
+          onClick={handleTransfer}
+          className="w-full bg-blue-500 text-white py-2 rounded-lg font-bold hover:bg-blue-600 transition mt-5"
+        >
+          Transfer
         </button>
       </div>
     </div>
